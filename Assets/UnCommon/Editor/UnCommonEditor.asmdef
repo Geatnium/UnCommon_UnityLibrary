@@ -1,0 +1,19 @@
+{
+    "name": "UnCommonLibraryEditor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:0af84dc11d4e3284780eb5b72c487377",
+        "GUID:d3040e716f8936a4f85e3a5eb009cb77"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
