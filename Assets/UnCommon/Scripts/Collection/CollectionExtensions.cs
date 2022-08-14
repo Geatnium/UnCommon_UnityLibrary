@@ -1,56 +1,15 @@
-﻿using System.Collections.Generic;
-using Unity.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnCommon
 {
     /// <summary>
-    /// 共通部分の拡張関数クラス
+    /// コレクション関連の拡張関数クラス
     /// </summary>
-    public static class StandardExtensions
+    public static class CollectionExtensions
     {
-        // -----------------------------------------------------------------------------
-        // 文字列
-        // -----------------------------------------------------------------------------
-        #region 文字列
-
-        /// <summary>
-        /// Nullか一文字も無いか調べる
-        /// </summary>
-        /// <param name="s">文字列</param>
-        /// <returns>Nullもしくは一文字もなければtrue</returns>
-        public static bool IsNullOrEmpty(this string s) => string.IsNullOrEmpty(s);
-
-        #endregion
-
-
-        // -----------------------------------------------------------------------------
-        // 文字列
-        // -----------------------------------------------------------------------------
-        #region 参照チェック系
-
-        /// <summary>
-        /// オブジェクト参照が有効かどうか
-        /// </summary>
-        /// <param name="obj">オブジェクト</param>
-        /// <returns>有効であればtrue</returns>
-        public static bool IsValid(this Object obj) => obj != null;
-
-        /// <summary>
-        /// 変数の中身が有効化どうか
-        /// </summary>
-        /// <param name="obj">オブジェクト</param>
-        /// <returns>有効であればtrue</returns>
-        public static bool IsValid(this object obj) => obj != null;
-
-        #endregion
-
-
-        // -----------------------------------------------------------------------------
-        // 文字列
-        // -----------------------------------------------------------------------------
-        #region 配列・リスト操作系
-
         /// <summary>
         /// コレクションに対して要素をユニークに追加する。
         /// </summary>
@@ -93,7 +52,5 @@ namespace UnCommon
             collection.CopyTo(array, 0);
             return array[index] != null;
         }
-
-        #endregion
     }
 }
