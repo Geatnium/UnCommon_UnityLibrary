@@ -2,7 +2,9 @@
     "name": "UnCommonLibrary",
     "rootNamespace": "",
     "references": [
-        "GUID:c80069e02bbd5b9478436150910f0376"
+        "GUID:f6fff43b61063a145b47159e6e46b6c1",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:560b04d1a97f54a4e82edc0cbbb69285"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

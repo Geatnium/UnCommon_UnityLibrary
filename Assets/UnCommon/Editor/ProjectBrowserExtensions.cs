@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.Compilation;
 using Assembly = System.Reflection.Assembly;
+using System.IO;
 
 namespace UnCommon
 {
@@ -17,6 +18,7 @@ namespace UnCommon
     [InitializeOnLoad]
     static class ProjectBrowserExtensions
     {
+        // コンストラクタ
         static ProjectBrowserExtensions()
         {
 #if UNITY_EDITOR_OSX
@@ -29,13 +31,91 @@ namespace UnCommon
 
         #region 定数
 
+        /// <summary>
+        ///  C#スクリプトテンプレートの元ファイル名
+        /// </summary>
+        private const string CsScriptTemplateFileName = "CsTemplate.cs";
+
+        /// <summary>
+        /// C#スクリプトテンプレートの新規ファイル名
+        /// </summary>
+        private const string NewCsScriptFileName = "NewCsScript.cs";
+
+        /// <summary>
+        ///  MonoBehaviourスクリプトテンプレートの元ファイル名
+        /// </summary>
         private const string MonoBehaviourScriptTemplateOriginalFileName = "NewMonoBehaviourScriptTemplate.cs";
+
+        /// <summary>
+        /// MonoBehaviourスクリプトテンプレートの新規ファイル名
+        /// </summary>
         private const string NewMonoBehaviourScriptFileName = "NewMonoBehaviourScript.cs";
+
+        /// <summary>
+        ///  Componentスクリプトテンプレートの元ファイル名
+        /// </summary>
+        private const string ComponentScriptTemplateOriginalFileName = "ComponentTemplate.cs";
+
+        /// <summary>
+        /// Componentスクリプトテンプレートの新規ファイル名
+        /// </summary>
+        private const string NewComponentScriptFileName = "NewComponentScript.cs";
+
+        /// <summary>
+        ///  Componentのインターフェーステンプレートの元ファイル名
+        /// </summary>
+        private const string ComponentIFScriptTemplateOriginalFileName = "ComponentTemplateIF.cs";
+
+        /// <summary>
+        /// Componentのインターフェーステンプレートの新規ファイル名
+        /// </summary>
+        private const string NewComponentIFScriptFileName = "NewComponentScriptIF.cs";
+
+        /// <summary>
+        ///  Managerスクリプトテンプレートの元ファイル名
+        /// </summary>
+        private const string ManagerScriptTemplateOriginalFileName = "ManagerTemplate.cs";
+
+        /// <summary>
+        /// Managerスクリプトテンプレートの新規ファイル名
+        /// </summary>
+        private const string NewManagerScriptFileName = "NewManagerScript.cs";
+
+        /// <summary>
+        ///  Managerのインターフェーステンプレートの元ファイル名
+        /// </summary>
+        private const string ManagerIFScriptTemplateOriginalFileName = "ManagerTemplateIF.cs";
+
+        /// <summary>
+        /// Managerのインターフェーステンプレートの新規ファイル名
+        /// </summary>
+        private const string NewManagerIFScriptFileName = "NewManagerScriptIF.cs";
+
+        /// <summary>
+        /// テキストファイルの新規ファイル名
+        /// </summary>
+        private const string TextFileName = "NewText.txt";
 
         #endregion
 
 
         #region メニューに追加した処理（メイン処理）
+
+        /// <summary>
+        /// <br>新規MonoBehaviourスクリプトを作成</br>
+        /// <br>CsTemplate.cs を複製したものであり、</br>
+        /// <br>普通に [Create > C# Script] から作成すると文字化けするのを防ぐ。</br>
+        /// </summary>
+        [MenuItem("Assets/Create/Create Empty C# Script", false, 0)]
+        private static void CreateEmptyCsScript()
+        {
+            // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）
+            if (Selection.assetGUIDs == null) return;
+            // 選択しているファイルの一つ目のGUIDからフォルダを取得
+            string selectedFolderPath = GetParentFolderOfSelectionGUID();
+            // スクリプトのテンプレート複製
+            CopyAssetByAssetName(CsScriptTemplateFileName, selectedFolderPath, NewCsScriptFileName);
+        }
 
         /// <summary>
         /// <br>新規MonoBehaviourスクリプトを作成</br>
@@ -48,9 +128,87 @@ namespace UnCommon
             // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）
             if (Selection.assetGUIDs == null) return;
             // 選択しているファイルの一つ目のGUIDからフォルダを取得
-            string selectionFolderPath = GetParentFolderOfSelectionGUID();
+            string selectedFolderPath = GetParentFolderOfSelectionGUID();
             // スクリプトのテンプレート複製
-            CopyAssetByAssetName(MonoBehaviourScriptTemplateOriginalFileName, selectionFolderPath, NewMonoBehaviourScriptFileName);
+            CopyAssetByAssetName(MonoBehaviourScriptTemplateOriginalFileName, selectedFolderPath, NewMonoBehaviourScriptFileName);
+        }
+
+        /// <summary>
+        /// <br>新規Componentスクリプトを作成</br>
+        /// <br>ComponentTemplate.cs を複製したもの</br>
+        /// </summary>
+        [MenuItem("Assets/Create/Create Component Script", false, 0)]
+        private static void CreateNewComponentScript()
+        {
+            // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）
+            if (Selection.assetGUIDs == null) return;
+            // 選択しているファイルの一つ目のGUIDからフォルダを取得
+            string selectedFolderPath = GetParentFolderOfSelectionGUID();
+            // スクリプトのテンプレート複製
+            CopyAssetByAssetName(ComponentScriptTemplateOriginalFileName, selectedFolderPath, NewComponentScriptFileName);
+        }
+
+        /// <summary>
+        /// <br>新規Componentのインターフェースを作成</br>
+        /// <br>ComponentTemplateIF.cs を複製したもの</br>
+        /// </summary>
+        [MenuItem("Assets/Create/Create Component Interface Script", false, 0)]
+        private static void CreateNewComponentIFScript()
+        {
+            // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）
+            if (Selection.assetGUIDs == null) return;
+            // 選択しているファイルの一つ目のGUIDからフォルダを取得
+            string selectedFolderPath = GetParentFolderOfSelectionGUID();
+            // スクリプトのテンプレート複製
+            CopyAssetByAssetName(ComponentIFScriptTemplateOriginalFileName, selectedFolderPath, NewComponentIFScriptFileName);
+        }
+
+        /// <summary>
+        /// <br>新規Managerスクリプトを作成</br>
+        /// <br>ManagerTemplate.cs を複製したもの</br>
+        /// </summary>
+        [MenuItem("Assets/Create/Create Manager Script", false, 0)]
+        private static void CreateNewManagerScript()
+        {
+            // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）
+            if (Selection.assetGUIDs == null) return;
+            // 選択しているファイルの一つ目のGUIDからフォルダを取得
+            string selectedFolderPath = GetParentFolderOfSelectionGUID();
+            // スクリプトのテンプレート複製
+            CopyAssetByAssetName(ManagerScriptTemplateOriginalFileName, selectedFolderPath, NewManagerScriptFileName);
+        }
+
+        /// <summary>
+        /// <br>新規Managerのインターフェースを作成</br>
+        /// <br>ManagerTemplate.cs を複製したもの</br>
+        /// </summary>
+        [MenuItem("Assets/Create/Create Manager Interface Script", false, 0)]
+        private static void CreateNewManagerIFScript()
+        {
+            // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）
+            if (Selection.assetGUIDs == null) return;
+            // 選択しているファイルの一つ目のGUIDからフォルダを取得
+            string selectedFolderPath = GetParentFolderOfSelectionGUID();
+            // スクリプトのテンプレート複製
+            CopyAssetByAssetName(ManagerIFScriptTemplateOriginalFileName, selectedFolderPath, NewManagerIFScriptFileName);
+        }
+
+        /// <summary>
+        /// 新規テキストファイルを作成する
+        /// </summary>
+        [MenuItem("Assets/Create/TextFile", false, 0)]
+        private static void CreateTextFile()
+        {
+            // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）
+            if (Selection.assetGUIDs == null) return;
+            // 選択した親フォルダを取得
+            string selectedFolderPath = GetParentFolderOfSelectionGUID();
+            // 新規ファイル名の生成
+            string newCreatePath = GenerateCreateFilePath(selectedFolderPath, TextFileName);
+            // 空のテキストを書き込んでおく
+            File.WriteAllText(newCreatePath, "", Encoding.UTF8);
+            // 更新
+            AssetDatabase.Refresh();
         }
 
         #endregion
