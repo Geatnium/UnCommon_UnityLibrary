@@ -9,11 +9,35 @@ using UnCommon;
 using UnityEditor;
 #endif
 
+
 /// <summary>
 /// クラスの説明
 /// </summary>
-public class ManagerTemplate<T> : ManagerBase<T>, IManagerTemplate where T : class, IService
+public class ActorComponentTemplate : ActorComponentBase
 {
+    //---------------------------- パラメータ ----------------------------//
+    #region パラメータ
+
+
+
+    #endregion
+
+
+    //---------------------------- 定数・静的変数 ----------------------------//
+    #region 定数・静的変数
+
+
+
+    #endregion
+
+
+    //---------------------------- メンバー変数 ----------------------------//
+    #region メンバー変数
+
+
+
+    #endregion
+
 
     //---------------------------- エディタ ----------------------------//
     #region エディタ
@@ -24,6 +48,7 @@ public class ManagerTemplate<T> : ManagerBase<T>, IManagerTemplate where T : cla
     protected override void OnReset()
     {
         base.OnReset();
+        // ここでどのイベント関数を行うか決める
         //SetComponentEventsEnabled(
         //    isUpdateEnabled: false,
         //    isUpdateJobEnabled: false,
@@ -31,6 +56,7 @@ public class ManagerTemplate<T> : ManagerBase<T>, IManagerTemplate where T : cla
         //    isFixedUpdateEnabled: false,
         //    isFixedUpdateJobEnabled: false,
         //    isTickEnabled: false);
+        // ここでイベント関数の優先順位を決める
         //SetComponentEventsOrder(
         //    updateOrder: 0,
         //    fixedUpdateOrder: 0);
@@ -52,14 +78,68 @@ public class ManagerTemplate<T> : ManagerBase<T>, IManagerTemplate where T : cla
 
     #endregion
 
+
+    //---------------------------- 静的関数 ----------------------------//
+    #region 静的関数
+
+
+
+    #endregion
+
+
+    //---------------------------- 仮想関数 ----------------------------//
+    #region 仮想関数
+
+
+
+    #endregion
+
+
+    //---------------------------- オーバーライド関数 ----------------------------//
+    #region オーバーライド関数
+
+
+
+    #endregion
+
+
+    //---------------------------- メンバー関数 ----------------------------//
+    #region メンバー関数
+
+
+
+    #endregion
+
+
+    //---------------------------- オーバーライドインターフェース関数 ----------------------------//
+    #region オーバーライドインターフェース関数
+
+
+
+    #endregion
+
+
+    //---------------------------- インターフェース関数 ----------------------------//
+    #region インターフェース関数
+
+
+
+    #endregion
+
+
     //---------------------------- イベント ----------------------------//
     #region イベント
 
-    // 初期化イベント
-    // OnAwake か インスタンスにアクセスされた時に一度だけに呼ばれる
-    protected override void Init()
+    // コンポーネントがインスタンスされた直後に一回だけ呼ばれる。
+    protected override async UniTask OnAwake()
     {
-        base.Init();
+        await base.OnAwake();
+    }
+
+    // コンポーネントがインスタンスされてから、次のフレームの直前に一回だけ呼ばれる。
+    protected override async UniTask OnStart()
+    {
+        await base.OnStart();
     }
 
     // フレームの更新時に毎回呼ばれる。(OnUpdate より先に呼ばれる)
@@ -109,7 +189,7 @@ public class ManagerTemplate<T> : ManagerBase<T>, IManagerTemplate where T : cla
         await base.OnTick();
     }
 
-    // コンポーネントがアクティブになった時に呼ばれる。
+    // OnStartの直後と、コンポーネントがアクティブになった時に呼ばれる。
     protected override async UniTask OnComponentEnabled()
     {
         await base.OnComponentEnabled();

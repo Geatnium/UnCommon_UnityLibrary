@@ -1,8 +1,10 @@
-﻿using UnCommon;
-
-/// <summary>
-/// サービスのインターフェース
-/// </summary>
-public interface IService : IComponent
+﻿
+namespace UnCommon
 {
+    /// <summary>
+    /// サービスのインターフェース
+    /// </summary>
+    public interface IService : IComponent
+    {
+    }
 }

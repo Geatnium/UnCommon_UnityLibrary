@@ -23,6 +23,22 @@ public class ComponentTemplate : ComponentBase, IComponentTemplate
     #endregion
 
 
+    //---------------------------- 定数・静的変数 ----------------------------//
+    #region 定数・静的変数
+
+
+
+    #endregion
+
+
+    //---------------------------- メンバー変数 ----------------------------//
+    #region メンバー変数
+
+
+
+    #endregion
+
+
     //---------------------------- エディタ ----------------------------//
     #region エディタ
 
@@ -59,22 +75,6 @@ public class ComponentTemplate : ComponentBase, IComponentTemplate
     }
 
 #endif
-
-    #endregion
-
-
-    //---------------------------- 定数・静的変数 ----------------------------//
-    #region 定数・静的変数
-
-
-
-    #endregion
-
-
-    //---------------------------- メンバー変数 ----------------------------//
-    #region メンバー変数
-
-
 
     #endregion
 

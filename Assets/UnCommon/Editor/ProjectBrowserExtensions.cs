@@ -72,6 +72,26 @@ namespace UnCommon
         private const string NewComponentIFScriptFileName = "NewComponentScriptIF.cs";
 
         /// <summary>
+        ///  ActorComponentスクリプトテンプレートの元ファイル名
+        /// </summary>
+        private const string ActorComponentScriptTemplateOriginalFileName = "ActorComponentTemplate.cs";
+
+        /// <summary>
+        /// ActorComponentスクリプトテンプレートの新規ファイル名
+        /// </summary>
+        private const string NewActorComponentScriptFileName = "NewActorComponentScript.cs";
+
+        /// <summary>
+        ///  ActorChildComponentスクリプトテンプレートの元ファイル名
+        /// </summary>
+        private const string ActorChildComponentScriptTemplateOriginalFileName = "ActorChildComponentTemplate.cs";
+
+        /// <summary>
+        /// ActorComponentスクリプトテンプレートの新規ファイル名
+        /// </summary>
+        private const string NewActorChildComponentScriptFileName = "NewActorChildComponentScript.cs";
+
+        /// <summary>
         ///  Managerスクリプトテンプレートの元ファイル名
         /// </summary>
         private const string ManagerScriptTemplateOriginalFileName = "ManagerTemplate.cs";
@@ -161,6 +181,36 @@ namespace UnCommon
             string selectedFolderPath = GetParentFolderOfSelectionGUID();
             // スクリプトのテンプレート複製
             CopyAssetByAssetName(ComponentIFScriptTemplateOriginalFileName, selectedFolderPath, NewComponentIFScriptFileName);
+        }
+
+        /// <summary>
+        /// <br>新規ActorComponentスクリプトを作成</br>
+        /// <br>ActorComponentTemplate.cs を複製したもの</br>
+        /// </summary>
+        [MenuItem("Assets/Create/Create Actor Component Script", false, 0)]
+        private static void CreateNewActorComponentScript()
+        {
+            // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）
+            if (Selection.assetGUIDs == null) return;
+            // 選択しているファイルの一つ目のGUIDからフォルダを取得
+            string selectedFolderPath = GetParentFolderOfSelectionGUID();
+            // スクリプトのテンプレート複製
+            CopyAssetByAssetName(ActorComponentScriptTemplateOriginalFileName, selectedFolderPath, NewActorComponentScriptFileName);
+        }
+
+        /// <summary>
+        /// <br>新規ActorChildComponentスクリプトを作成</br>
+        /// <br>ActorChildComponentTemplate.cs を複製したもの</br>
+        /// </summary>
+        [MenuItem("Assets/Create/Create Actor Child Component Script", false, 0)]
+        private static void CreateNewActorChildComponentScript()
+        {
+            // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）
+            if (Selection.assetGUIDs == null) return;
+            // 選択しているファイルの一つ目のGUIDからフォルダを取得
+            string selectedFolderPath = GetParentFolderOfSelectionGUID();
+            // スクリプトのテンプレート複製
+            CopyAssetByAssetName(ActorChildComponentScriptTemplateOriginalFileName, selectedFolderPath, NewActorChildComponentScriptFileName);
         }
 
         /// <summary>
