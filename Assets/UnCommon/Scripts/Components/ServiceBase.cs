@@ -22,6 +22,12 @@ namespace UnCommon
         /// </summary>
         private bool isInitialized = false;
 
+        /// <summary>
+        /// 常駐マネージャーか（破棄しない）
+        /// </summary>
+        [SerializeField]
+        protected bool isRegident = false;
+
         #endregion
 
 
@@ -44,6 +50,7 @@ namespace UnCommon
             //SetComponentEventsOrder(
             //    updateOrder: 0,
             //    fixedUpdateOrder: 0);
+            //isRegident = false;
         }
 
         // エディタでパラメータなどが変更された時に呼ばれる
@@ -90,6 +97,11 @@ namespace UnCommon
         protected virtual void Init()
         {
             isInitialized = true;
+            // 破棄しない設定
+            if (isRegident)
+            {
+                DontDestroyOnLoad(this);
+            }
         }
 
         // コンポーネントがインスタンスされた直後に一回だけ呼ばれる。

@@ -12,7 +12,7 @@ using UnityEditor;
 /// <summary>
 /// クラスの説明
 /// </summary>
-public class ManagerTemplate<T> : ManagerBase<T>, IManagerTemplate where T : class, IService
+public class ManagerTemplate : ManagerBase<IManagerTemplate>, IManagerTemplate
 {
     //---------------------------- パラメータ ----------------------------//
     #region パラメータ

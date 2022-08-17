@@ -10,11 +10,28 @@ using UnityEditor;
 
 namespace UnCommon
 {
+
     /// <summary>
-    /// マネージャーのベース
+    /// <br>シーンマネージャー</br>
+    /// <br>シーン切り替えやロードなどを取りまとめる</br>
     /// </summary>
-    public abstract class ManagerBase<T> : ServiceBase<T>, IManager where T : class, IService
+    public class SceneManager : ManagerBase<ISceneManager>, ISceneManager
     {
+        //---------------------------- パラメータ ----------------------------//
+        #region パラメータ
+
+
+
+        #endregion
+
+
+        //---------------------------- 定数・静的変数 ----------------------------//
+        #region 定数・静的変数
+
+
+
+        #endregion
+
 
         //---------------------------- メンバー変数 ----------------------------//
         #region メンバー変数
@@ -22,6 +39,7 @@ namespace UnCommon
 
 
         #endregion
+
 
         //---------------------------- エディタ ----------------------------//
         #region エディタ
@@ -42,7 +60,7 @@ namespace UnCommon
             //SetComponentEventsOrder(
             //    updateOrder: 0,
             //    fixedUpdateOrder: 0);
-            //isRegident = false;
+            isRegident = true;
         }
 
         // エディタでパラメータなどが変更された時に呼ばれる
@@ -61,11 +79,60 @@ namespace UnCommon
 
         #endregion
 
+
+        //---------------------------- 静的関数 ----------------------------//
+        #region 静的関数
+
+
+
+        #endregion
+
+
+        //---------------------------- 仮想関数 ----------------------------//
+        #region 仮想関数
+
+
+
+        #endregion
+
+
+        //---------------------------- オーバーライド関数 ----------------------------//
+        #region オーバーライド関数
+
+
+
+        #endregion
+
+
+        //---------------------------- メンバー関数 ----------------------------//
+        #region メンバー関数
+
+
+
+        #endregion
+
+
+        //---------------------------- オーバーライドインターフェース関数 ----------------------------//
+        #region オーバーライドインターフェース関数
+
+
+
+        #endregion
+
+
+        //---------------------------- インターフェース関数 ----------------------------//
+        #region インターフェース関数
+
+
+
+        #endregion
+
+
         //---------------------------- イベント ----------------------------//
         #region イベント
 
         // 初期化イベント
-        // OnAwake か インスタンスにアクセスされた時に一度だけに呼ばれる
+        // インスタンスにアクセスされた時に一度だけに呼ばれる
         protected override void Init()
         {
             base.Init();

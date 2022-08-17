@@ -45,7 +45,7 @@ namespace UnCommon
         public static bool GetJobsNativeArray(out NativeArray<JobHandle> output)
         {
             // ジョブが一個も登録されていなかったら、配列をすぐに解放しFalseを返す
-            if (jobHandles.IsValidIndex(0))
+            if (!jobHandles.IsValidIndex(0))
             {
                 output = new(1, Allocator.TempJob);
                 output.Dispose();

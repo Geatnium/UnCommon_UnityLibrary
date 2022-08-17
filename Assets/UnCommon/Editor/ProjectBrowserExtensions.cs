@@ -44,7 +44,7 @@ namespace UnCommon
         /// <summary>
         ///  MonoBehaviourスクリプトテンプレートの元ファイル名
         /// </summary>
-        private const string MonoBehaviourScriptTemplateOriginalFileName = "NewMonoBehaviourScriptTemplate.cs";
+        private const string MonoBehaviourScriptTemplateOriginalFileName = "MonoBehaviourScriptTemplate.cs";
 
         /// <summary>
         /// MonoBehaviourスクリプトテンプレートの新規ファイル名

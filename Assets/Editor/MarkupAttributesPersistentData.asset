@@ -14,15 +14,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedBoolEntries:
   - key: UnCommon.Actor/Component Event
-    value: 0
+    value: 1
   - key: UnCommon.Actor/Debug
     value: 0
   - key: UnCommon.Actor/Actor
-    value: 1
+    value: 0
   - key: UnCommon.Actor/Component Event/Update
-    value: 0
+    value: 1
   - key: UnCommon.Actor/Component Event/FixedUpdate
-    value: 0
+    value: 1
   - key: UnCommon.Actor/Component Event/Tick
+    value: 1
+  - key: UnCommon.ComponentManager/Component Event
+    value: 1
+  - key: UnCommon.ComponentManager/Debug
+    value: 1
+  - key: UnCommon.ComponentManager/Component Event/Update
+    value: 1
+  - key: UnCommon.ComponentManager/Component Event/FixedUpdate
+    value: 1
+  - key: UnCommon.ComponentManager/Component Event/Tick
+    value: 1
+  - key: UnCommon.SceneManager/Component Event
+    value: 0
+  - key: UnCommon.SceneManager/Debug
     value: 0
   serializedIntEntries: []
