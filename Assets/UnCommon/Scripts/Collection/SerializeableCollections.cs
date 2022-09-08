@@ -160,6 +160,8 @@ namespace UnCommon
     [Serializable]
     public class SerializableGenericCollection<T, Collection> : ISerializationCallbackReceiver, ICollection<T> where Collection : class, ICollection<T>, new()
     {
+        protected T defaultValue;
+
         protected Collection _collection = null;
 
         [SerializeField]
@@ -245,6 +247,25 @@ namespace UnCommon
 
         public void CopyTo(T[] array) { collection.CopyTo(array); }
         public void CopyTo(T[] array, int index, int count) { collection.CopyTo(array, index, count); }
+
+        public override void Add(T item)
+        {
+            if (!_collection.Contains(item))
+            {
+                _collection.Add(item);
+            }
+            else
+            {
+                if (!_collection.Contains(defaultValue))
+                {
+                    _collection.Add(defaultValue);
+                }
+                else
+                {
+                    DebugLogger.LogWarning($"{item}が重複しているため追加できません。");
+                }
+            }
+        }
     }
 
     [Serializable]
@@ -262,6 +283,8 @@ namespace UnCommon
         public Collection collection { get { return _collection; } set { _collection = value; } }
 
         protected Collection _collection = new Collection();
+
+        protected TKey defaultKey;        
 
         [SerializeField]
         private List<Entry> _ = null;
@@ -330,6 +353,7 @@ namespace UnCommon
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() { throw new NotImplementedException(); }
         IEnumerator IEnumerable.GetEnumerator() { throw new NotImplementedException(); }
+
     }
 
     [Serializable]
@@ -354,6 +378,25 @@ namespace UnCommon
             foreach (var entry in entries)
             {
                 Add(entry.key, entry.value);
+            }
+        }
+
+        public override void Add(TKey key, TValue value)
+        {
+            if (!_collection.ContainsKey(key))
+            {
+                _collection.Add(key, value);
+            }
+            else
+            {
+                if (!_collection.ContainsKey(defaultKey))
+                {
+                    _collection.Add(defaultKey, value);
+                }
+                else
+                {
+                    DebugLogger.LogWarning($"{key}が重複しているため追加できません。");
+                }
             }
         }
     }

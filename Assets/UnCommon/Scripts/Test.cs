@@ -9,7 +9,7 @@ using UnCommon;
 public class Test : MonoBehaviour
 {
     [SerializeField]
-    private IntStringDictionary ooo;
+    private IntToStringDictionary ooo;
 
     [SerializeField]
     private IntHashSet iii;

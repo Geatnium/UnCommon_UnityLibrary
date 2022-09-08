@@ -62,6 +62,34 @@ namespace UnCommon
         }
 
         /// <summary>
+        /// トランスフォームのXとZの座標を変更
+        /// </summary>
+        /// <param name="transform"></param>
+        /// <param name="newX"></param>
+        /// <param name="newZ"></param>
+        public static void SetPositionXZ(this Transform transform, float newX, float newZ)
+        {
+            Vector3 tempPosition = transform.position;
+            tempPosition.x = newX;
+            tempPosition.z = newZ;
+            transform.position = tempPosition;
+        }
+
+        /// <summary>
+        /// トランスフォームのXとZの座標を変更
+        /// </summary>
+        /// <param name="transform"></param>
+        /// <param name="newX"></param>
+        /// <param name="newZ"></param>
+        public static void SetPositionXZ(this Transform transform, Vector3 newPosition)
+        {
+            Vector3 tempPosition = transform.position;
+            tempPosition.x = newPosition.x;
+            tempPosition.z = newPosition.z;
+            transform.position = tempPosition;
+        }
+
+        /// <summary>
         /// 高さを無視して水平方向で指定座標の方を向く
         /// </summary>
         /// <param name="transform"></param>

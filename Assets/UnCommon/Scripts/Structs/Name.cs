@@ -24,12 +24,24 @@ namespace UnCommon
         private int id;
 
         /// <summary>
+        /// None
+        /// </summary>
+        public readonly static Name None = "None";
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>≥
         /// <param name="name"></param>
         public Name(string name)
         {
-            this.name = name;
+            if (name.IsNullOrEmpty())
+            {
+                this.name = "None";
+            }
+            else
+            {
+                this.name = name;
+            }
             id = NameUtility.GetID(name);
         }
 
@@ -60,6 +72,16 @@ namespace UnCommon
         public static bool operator !=(Name a, Name b)
         {
             return !(a == b);
+        }
+
+        public static bool IsNone(Name name)
+        {
+            return name == None;
+        }
+
+        public bool IsNone()
+        {
+            return name == None;
         }
 
         public override bool Equals(object obj)
@@ -103,22 +125,26 @@ namespace UnCommon
             {
                 nameToID = new();
             }
+            if (name.IsNullOrEmpty())
+            {
+                name = "None";
+            }
             // 要素数をIDとする
             int newValue = nameToID.Count;
             // すでに登録済みの場合、そのままValue（ID）を返す
             if (nameToID.TryGetValue(name, out int value))
             {
-                // DebugLogger.Log($"Name : {name} は {value}");
+                //DebugLogger.Log($"Name : {name} は {value}");
                 return value;
             }
             // 新しく登録し、その時の要素数をIDとして返す
             if (nameToID.TryAdd(name, newValue))
             {
-                // DebugLogger.Log($"Name : {name} を {newValue} として登録");
+                //DebugLogger.Log($"Name : {name} を {newValue} として登録");
                 return newValue;
             }
             // すでに登録済みでもなく、新しく登録できない場合はエラー
-            DebugLogger.LogWarning($"Name : {name} がうまく取得できなかった");
+            //DebugLogger.LogWarning($"Name : {name} がうまく取得できなかった");
             return -1;
         }
     }

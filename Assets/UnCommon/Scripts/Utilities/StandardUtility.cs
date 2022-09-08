@@ -12,22 +12,47 @@ namespace UnCommon
         /// <summary>
         /// float計算の許容範囲（比較とか）
         /// </summary>
-        public static readonly float Tolerance = 0.00001f;
+        public static readonly float Tolerance = 0.000001f;
+
+        /// <summary>
+        /// 0
+        /// </summary>
+        public static readonly int Zero = 0;
+
+        /// <summary>
+        /// 1
+        /// </summary>
+        public static readonly int One = 1;
+
+        /// <summary>
+        /// 2
+        /// </summary>
+        public static readonly int Two = 2;
 
         /// <summary>
         /// 0.0f
         /// </summary>
-        public static readonly float Zero = 0.0f;
+        public static readonly float Zerof = 0.0f;
 
         /// <summary>
         /// 1.0f
         /// </summary>
-        public static readonly float One = 1.0f;
+        public static readonly float Onef = 1.0f;
 
         /// <summary>
         /// 2.0f
         /// </summary>
-        public static readonly float Two = 2.0f;
+        public static readonly float Twof = 2.0f;
+
+        /// <summary>
+        /// floatの秒をミリ秒のintに変換する
+        /// </summary>
+        /// <param name="seconds"></param>
+        /// <returns></returns>
+        public static int ToMilliSecondsInt(this float seconds)
+        {
+            return (int)(seconds * 1000.0f);
+        }
 
         /// <summary>
         /// ゲームオブジェクトを生成する

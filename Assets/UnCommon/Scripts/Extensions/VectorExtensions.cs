@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static UnCommon.StandardUtility;
 
 namespace UnCommon
 {
@@ -180,6 +181,16 @@ namespace UnCommon
         public static Vector2 RotateAroundAxis(this Vector2 vector3, float angle)
         {
             return Quaternion.AngleAxis(angle, new Vector3(0.0f, 0.0f, 1.0f)) * vector3;
+        }
+
+        /// <summary>
+        /// ゼロベクトルが調べる
+        /// </summary>
+        /// <param name="vector3"></param>
+        /// <returns></returns>
+        public static bool IsZeroVector(this Vector3 vector3)
+        {
+            return vector3.magnitude < Tolerance;
         }
     }
 }

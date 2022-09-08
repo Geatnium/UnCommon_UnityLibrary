@@ -23,46 +23,51 @@ namespace UnCommon
         /// インスタンスを登録する
         /// </summary>
         /// <param name="instance">登録するインスタンス</param>
-        public static void Register<T>(T instance) where T : class, IService
+        /// <returns>登録に成功したらtrueを返す</returns>
+        public static bool Register<T>(T instance) where T : class, IService
         {
             Type type = typeof(T);
             // すでに登録されていたら警告を出す
             if (instances.ContainsKey(key: type))
             {
-                DebugLogger.LogWarning($"サービスロケータにすでに同じ型のインスタンスが登録されている：{type.Name}");
-                return;
+                instance.Destroy();
+                //DebugLogger.LogWarning($"サービスロケータにすでに同じ型のインスタンスが登録されている：{type.Name}");
+                return false;
             }
             // 初期化させて登録
-            instance.GetGameObject().SendMessage("InitOnce");
+            instance.GetOwnerGameObject().SendMessage("InitOnce");
             instances.Add(type, instance);
             DebugLogger.Log($"サービスロケータに登録：{type.Name}");
+            return true;
         }
 
         /// <summary>
         /// インスタンスの登録を解除
         /// </summary>
         /// <param name="instance">登録を解除するインスタンス</param>
-        public static void Unregister<T>(T instance) where T : class, IService
+        /// <returns>解除に成功したらtrueを返す</returns>
+        public static bool Unregister<T>(T instance) where T : class, IService
         {
             Type type = typeof(T);
             // 登録されていなければ何もしない
-            if (!instances.ContainsKey(type)) return;
+            if (!instances.ContainsKey(type)) return false;
             // 登録されている要求された型のインスタンスと渡されたインスタンスが一致しない場合、警告を出す
             if (instances[type] != instance)
             {
-                DebugLogger.LogWarning($"サービスロケータに登録されている要求された型のインスタンスと渡されたインスタンスが一致しない：{type.Name}");
-                return;
+                //DebugLogger.LogWarning($"サービスロケータに登録されている要求された型のインスタンスと渡されたインスタンスが一致しない：{type.Name}");
+                return false;
             }
             // 同じインスタンスがあったら除外
             instances.Remove(type);
             DebugLogger.Log($"サービスロケータから解除：{type.Name}");
+            return true;
         }
 
         /// <summary>
-        /// 指定された型のインスタンスがすでに登録されているかをチェックする
+        /// 指定された型のインスタンスが存在するかを取得する
         /// </summary>
-        /// <returns>指定された型のインスタンスがすでに登録されている場合は true を返す</returns>
-        public static bool IsTypeRegisted<T>() where T : class, IService
+        /// <returns>指定された型のインスタンスがすでに存在している場合は true を返す</returns>
+        public static bool ExistsType<T>() where T : class, IService
         {
             return instances.ContainsKey(typeof(T));
         }
@@ -72,7 +77,7 @@ namespace UnCommon
         /// </summary>
         /// <param name="instance">登録を確認するインスタンス</param>
         /// <returns>渡されたインスタンスが既に登録されている場合は true を返します。</returns>
-        public static bool IsInstanceRegisted<T>(T instance) where T : class, IService
+        public static bool ExistsInstance<T>(T instance) where T : class, IService
         {
             Type type = typeof(T);
             return instances.ContainsKey(type) && instances[type] == instance;
@@ -93,7 +98,7 @@ namespace UnCommon
                 return instances[type] as T;
             }
             // 登録されていなかったら、シーンから探して見つけたら登録
-            if (FindInstance(out T instance))
+            if (FindInstanceInScene(out T instance))
             {
                 Register(instance);
                 return instance;
@@ -118,7 +123,7 @@ namespace UnCommon
                 return true;
             }
             // 登録されていなかったら、シーンから探して見つけたら登録して成功
-            if (FindInstance(out instance))
+            if (FindInstanceInScene(out instance))
             {
                 Register(instance);
                 return true;
@@ -129,11 +134,11 @@ namespace UnCommon
         }
 
         /// <summary>
-        /// 指定のインターフェースの型を持ったサービスを呼び出す
+        /// 指定のインターフェースの型を持ったサービスの処理を呼び出す
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="functor">実行する処理</param>
-        /// <returns></returns>
+        /// <returns>呼び出しに成功したらtrueを返す</returns>
         public static bool Execute<T>(in Action<T> functor) where T : class, IService
         {
             // インスタンスを取得できたらfunctorの処理を発行
@@ -146,12 +151,12 @@ namespace UnCommon
         }
 
         /// <summary>
-        /// 指定のインターフェースを持ったサービスのインスタンスを探す
+        /// 指定のインターフェースを持ったサービスのインスタンスをシーンから探す
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="instance">取得したインスタンスを入れる変数</param>
         /// <returns></returns>
-        private static bool FindInstance<T>(out T instance) where T : class, IService
+        private static bool FindInstanceInScene<T>(out T instance) where T : class, IService
         {
             // シーンからインスタンスを探し、取得できたらそれを返す
             ServiceBase<T> serviceBase = GameObject.FindObjectOfType<ServiceBase<T>>();

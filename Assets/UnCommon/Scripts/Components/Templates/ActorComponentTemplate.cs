@@ -4,6 +4,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using MarkupAttributes;
 using UnCommon;
+using static UnCommon.StandardUtility;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -48,24 +49,23 @@ public class ActorComponentTemplate : ActorComponentBase
     protected override void OnReset()
     {
         base.OnReset();
-        // ここでどのイベント関数を行うか決める
-        //SetComponentEventsEnabled(
-        //    isUpdateEnabled: false,
-        //    isUpdateJobEnabled: false,
-        //    isLateUpdateEnabled: false,
-        //    isFixedUpdateEnabled: false,
-        //    isFixedUpdateJobEnabled: false,
-        //    isTickEnabled: false);
-        // ここでイベント関数の優先順位を決める
-        //SetComponentEventsOrder(
-        //    updateOrder: 0,
-        //    fixedUpdateOrder: 0);
     }
 
     // エディタでパラメータなどが変更された時に呼ばれる
     protected override void OnConstruct()
     {
         base.OnConstruct();
+        // このコンポーネントのイベント設定
+        SetComponentEventsEnabled(
+                isUpdateEnabled: false, // OnUpdate() を行なうか
+                isUpdateJobEnabled: false, // OnUpdateJob() を行なうか
+                isLateUpdateEnabled: false, // OnLateUpdate() を行なうか
+                isFixedUpdateEnabled: false, // OnFixedUpdate() を行なうか
+                isFixedUpdateJobEnabled: false, // OnFixedUpdateJob() を行なうか
+                isTickEnabled: false); // OnTick を行なうか
+        SetComponentEventsOrder(
+            updateOrder: 0, // Update系イベントの優先順位
+            fixedUpdateOrder: 0); // FixedUpdate系イベントの優先順位
     }
 
     // デバッグ（ギズモ）表示用のイベント

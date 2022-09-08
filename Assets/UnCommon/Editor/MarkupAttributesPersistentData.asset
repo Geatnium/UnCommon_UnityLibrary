@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da0d25574c33ac64d98db1c615ce7ff9, type: 3}
+  m_Name: MarkupAttributesPersistentData
+  m_EditorClassIdentifier: 
+  serializedBoolEntries:
+  - key: UnCommon.ComponentManager/Component Event
+    value: 0
+  - key: UnCommon.ComponentManager/Debug
+    value: 0
+  - key: UnCommon.ComponentManager/Service
+    value: 0
+  - key: UnCommon.UIManager/Component Event
+    value: 0
+  - key: UnCommon.UIManager/Debug
+    value: 0
+  - key: UnCommon.UIManager/Service
+    value: 0
+  - key: UnCommon.UIManager/Setup
+    value: 1
+  - key: UnCommon.Actor/Component Event
+    value: 0
+  - key: UnCommon.Actor/Debug
+    value: 0
+  - key: UnCommon.Actor/Actor
+    value: 0
+  - key: UnCommon.ChildActor/Component Event
+    value: 0
+  - key: UnCommon.ChildActor/Debug
+    value: 0
+  - key: UnCommon.ChildActor/ActorChild
+    value: 0
+  - key: UnCommon.SceneManager/Component Event
+    value: 0
+  - key: UnCommon.SceneManager/Debug
+    value: 0
+  - key: UnCommon.SceneManager/Service
+    value: 0
+  - key: UnCommon.SoundManager/Component Event
+    value: 0
+  - key: UnCommon.SoundManager/Debug
+    value: 0
+  - key: UnCommon.SoundManager/Service
+    value: 0
+  - key: UnCommon.Widget/Component Event
+    value: 1
+  - key: UnCommon.Widget/Debug
+    value: 1
+  - key: UnCommon.Widget/Component Event/Update
+    value: 0
+  - key: UnCommon.Widget/Component Event/FixedUpdate
+    value: 0
+  - key: UnCommon.Widget/Component Event/Tick
+    value: 0
+  - key: UnCommon.UIManager/Setup/Fade
+    value: 0
+  serializedIntEntries: []

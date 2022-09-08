@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using MarkupAttributes;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -14,6 +15,20 @@ namespace UnCommon
     /// </summary>
     public abstract class ServiceBase<T> : ComponentBase, IService where T : class, IService
     {
+
+        //---------------------------- パラメータ ----------------------------//
+        #region パラメータ
+
+        [Foldout("Service")]
+
+        /// <summary>
+        /// 常駐マネージャーか（破棄しない）
+        /// </summary>
+        [SerializeField]
+        protected bool isResident = false;
+
+        #endregion
+
         //---------------------------- メンバー変数 ----------------------------//
         #region メンバー変数
 
@@ -21,12 +36,6 @@ namespace UnCommon
         /// 初期化したか
         /// </summary>
         private bool isInitialized = false;
-
-        /// <summary>
-        /// 常駐マネージャーか（破棄しない）
-        /// </summary>
-        [SerializeField]
-        protected bool isRegident = false;
 
         #endregion
 
@@ -40,6 +49,12 @@ namespace UnCommon
         protected override void OnReset()
         {
             base.OnReset();
+        }
+
+        // エディタでパラメータなどが変更された時に呼ばれる
+        protected override void OnConstruct()
+        {
+            base.OnConstruct();
             //SetComponentEventsEnabled(
             //    isUpdateEnabled: false,
             //    isUpdateJobEnabled: false,
@@ -50,13 +65,7 @@ namespace UnCommon
             //SetComponentEventsOrder(
             //    updateOrder: 0,
             //    fixedUpdateOrder: 0);
-            //isRegident = false;
-        }
-
-        // エディタでパラメータなどが変更された時に呼ばれる
-        protected override void OnConstruct()
-        {
-            base.OnConstruct();
+            //isResident = false;
         }
 
         // デバッグ（ギズモ）表示用のイベント
@@ -98,7 +107,7 @@ namespace UnCommon
         {
             isInitialized = true;
             // 破棄しない設定
-            if (isRegident)
+            if (isResident)
             {
                 DontDestroyOnLoad(this);
             }

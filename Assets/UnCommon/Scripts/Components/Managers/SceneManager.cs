@@ -1,8 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
+using UnityEngine.SceneManagement;
 using Cysharp.Threading.Tasks;
 using MarkupAttributes;
+using static UnCommon.StandardUtility;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,15 +25,9 @@ namespace UnCommon
         //---------------------------- パラメータ ----------------------------//
         #region パラメータ
 
+        //[Foldout("Setup Parameters")]
 
-
-        #endregion
-
-
-        //---------------------------- 定数・静的変数 ----------------------------//
-        #region 定数・静的変数
-
-
+        //[SerializeField, Tooltip("ロードUI")]
 
         #endregion
 
@@ -36,7 +35,35 @@ namespace UnCommon
         //---------------------------- メンバー変数 ----------------------------//
         #region メンバー変数
 
+        /// <summary>
+        /// 現在いるシーン
+        /// </summary>
+        private Name currentScene;
 
+        /// <summary>
+        /// 次に設定されて現在読み込み中で遷移待機中のシーン
+        /// </summary>
+        private Name nextScene = Name.None;
+
+        /// <summary>
+        /// 前にいたシーン
+        /// </summary>
+        private Name previousScene = Name.None;
+
+        /// <summary>
+        /// ロード
+        /// </summary>
+        private AsyncOperationHandle<SceneInstance> loadingNextSceneHandle;
+
+        /// <summary>
+        /// ローディングで使用するシーン
+        /// </summary>
+        private readonly Name LoadingScene = "Loading";
+
+        /// <summary>
+        /// ロード完了とみなす進捗度
+        /// </summary>
+        private const float loadingCompleteThreshold = 0.9f;
 
         #endregion
 
@@ -50,23 +77,24 @@ namespace UnCommon
         protected override void OnReset()
         {
             base.OnReset();
-            //SetComponentEventsEnabled(
-            //    isUpdateEnabled: false,
-            //    isUpdateJobEnabled: false,
-            //    isLateUpdateEnabled: false,
-            //    isFixedUpdateEnabled: false,
-            //    isFixedUpdateJobEnabled: false,
-            //    isTickEnabled: false);
-            //SetComponentEventsOrder(
-            //    updateOrder: 0,
-            //    fixedUpdateOrder: 0);
-            isRegident = true;
         }
 
         // エディタでパラメータなどが変更された時に呼ばれる
         protected override void OnConstruct()
         {
             base.OnConstruct();
+            // このコンポーネントのイベント設定
+            SetComponentEventsEnabled(
+                    isUpdateEnabled: false, // OnUpdate() を行なうか
+                    isUpdateJobEnabled: false, // OnUpdateJob() を行なうか
+                    isLateUpdateEnabled: false, // OnLateUpdate() を行なうか
+                    isFixedUpdateEnabled: false, // OnFixedUpdate() を行なうか
+                    isFixedUpdateJobEnabled: false, // OnFixedUpdateJob() を行なうか
+                    isTickEnabled: false); // OnTick を行なうか
+            SetComponentEventsOrder(
+                updateOrder: 0, // Update系イベントの優先順位
+                fixedUpdateOrder: 0); // FixedUpdate系イベントの優先順位
+            isResident = true;
         }
 
         // デバッグ（ギズモ）表示用のイベント
@@ -80,42 +108,43 @@ namespace UnCommon
         #endregion
 
 
-        //---------------------------- 静的関数 ----------------------------//
-        #region 静的関数
-
-
-
-        #endregion
-
-
-        //---------------------------- 仮想関数 ----------------------------//
-        #region 仮想関数
-
-
-
-        #endregion
-
-
-        //---------------------------- オーバーライド関数 ----------------------------//
-        #region オーバーライド関数
-
-
-
-        #endregion
-
-
         //---------------------------- メンバー関数 ----------------------------//
         #region メンバー関数
 
-
-
-        #endregion
-
-
-        //---------------------------- オーバーライドインターフェース関数 ----------------------------//
-        #region オーバーライドインターフェース関数
-
-
+        private async UniTask OpenSceneAfterLoad(float fadeDuration)
+        {
+            DebugLogger.Log($"{nextScene}に遷移開始");
+            IUIManager uiManager;
+            if (ServiceLocator.TryGetInstance(out uiManager))
+            {
+                await uiManager.FadeOut(Color.black, fadeDuration, Zerof);
+            }
+            AsyncOperationHandle<SceneInstance> loadingHandle = Addressables.LoadSceneAsync("Loading", LoadSceneMode.Single, false);
+            await loadingHandle.ToUniTask(this);
+            if(loadingHandle.Status == AsyncOperationStatus.Succeeded)
+            {
+                await loadingHandle.Result.ActivateAsync().ToUniTask();
+                Addressables.Release(loadingHandle);
+                DebugLogger.Log($"{UnityEngine.SceneManagement.SceneManager.GetActiveScene().name}ロード画面遷移");
+                if (loadingNextSceneHandle.IsValid())
+                {
+                    Addressables.Release(loadingNextSceneHandle);
+                }
+                loadingNextSceneHandle = Addressables.LoadSceneAsync(nextScene.ToString(), LoadSceneMode.Single, false);
+                DebugLogger.Log($"{nextScene}のロード開始");
+                await UniTask.Delay(2.0f.ToMilliSecondsInt());
+                await loadingNextSceneHandle.ToUniTask(this);
+                DebugLogger.Log($"{nextScene}のロード完了！");
+                if (loadingNextSceneHandle.Status == AsyncOperationStatus.Succeeded)
+                {
+                    await loadingNextSceneHandle.Result.ActivateAsync().ToUniTask();
+                    previousScene = currentScene;
+                    currentScene = nextScene;
+                    nextScene = Name.None;
+                }
+            }
+            
+        }
 
         #endregion
 
@@ -123,7 +152,35 @@ namespace UnCommon
         //---------------------------- インターフェース関数 ----------------------------//
         #region インターフェース関数
 
+        public void OpenScene(Name nextScene, float fadeDuration = 1.0f)
+        {
+            if (this.nextScene != Name.None) return;
+            this.nextScene = nextScene;
+            OpenSceneAfterLoad(fadeDuration).Forget();
+        }
 
+        public Name GetNextSceneName()
+        {
+            return nextScene;
+        }
+
+        public Name PrevSceneName()
+        {
+            return previousScene;
+        }
+
+        public float GetLoadingSceneProgress()
+        {
+            if (!loadingNextSceneHandle.IsValid())
+            {
+                return Zerof;
+            }
+            //if (loadingNextSceneHandle.IsDone)
+            //{
+            //    return One;
+            //}
+            return (loadingNextSceneHandle.PercentComplete - 0.75f) / 0.25f;
+        }
 
         #endregion
 
@@ -136,6 +193,7 @@ namespace UnCommon
         protected override void Init()
         {
             base.Init();
+            currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         }
 
         // フレームの更新時に毎回呼ばれる。(OnUpdate より先に呼ばれる)

@@ -73,7 +73,7 @@ namespace UnCommon
         /// <summary>
         /// このアクターの名前
         /// </summary>
-        private Name myName;
+        private Name actorName;
 
         /// <summary>
         /// 自身を生成したゲームオブジェクト
@@ -96,13 +96,13 @@ namespace UnCommon
 
         public void SetName(Name name)
         {
-            myName = name;
-            selfGameObject.name = name;
+            actorName = name;
+            ownerGameObject.name = name;
         }
 
         public Name GetName()
         {
-            return myName;
+            return actorName;
         }
 
         public void SetSpawner(GameObject gameObject)
@@ -145,7 +145,7 @@ namespace UnCommon
         protected override async UniTask OnAwake()
         {
             await base.OnAwake();
-            myName = selfGameObject.name;
+            actorName = ownerGameObject.name;
         }
 
         // コンポーネントがインスタンスされてから、次のフレームの直前に一回だけ呼ばれる。
@@ -218,6 +218,7 @@ namespace UnCommon
         {
             await base.OnComponentDestroyed();
         }
+
 
         #endregion
     }

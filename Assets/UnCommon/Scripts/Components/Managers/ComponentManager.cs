@@ -62,6 +62,11 @@ namespace UnCommon
         protected override void OnReset()
         {
             base.OnReset();
+        }
+
+        protected override void OnConstruct()
+        {
+            base.OnConstruct();
             SetComponentEventsEnabled(
                 isUpdateEnabled: true,
                 isUpdateJobEnabled: true,
@@ -69,11 +74,10 @@ namespace UnCommon
                 isFixedUpdateEnabled: true,
                 isFixedUpdateJobEnabled: true,
                 isTickEnabled: true);
-        }
-
-        protected override void OnConstruct()
-        {
-            base.OnConstruct();
+            SetComponentEventsOrder(
+                updateOrder: 0,
+                fixedUpdateOrder: 0);
+            isResident = false;
         }
 
         protected override void OnDebugDraw()

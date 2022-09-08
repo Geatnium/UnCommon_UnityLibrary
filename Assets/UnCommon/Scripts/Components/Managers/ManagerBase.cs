@@ -32,6 +32,12 @@ namespace UnCommon
         protected override void OnReset()
         {
             base.OnReset();
+        }
+
+        // エディタでパラメータなどが変更された時に呼ばれる
+        protected override void OnConstruct()
+        {
+            base.OnConstruct();
             //SetComponentEventsEnabled(
             //    isUpdateEnabled: false,
             //    isUpdateJobEnabled: false,
@@ -42,13 +48,7 @@ namespace UnCommon
             //SetComponentEventsOrder(
             //    updateOrder: 0,
             //    fixedUpdateOrder: 0);
-            //isRegident = false;
-        }
-
-        // エディタでパラメータなどが変更された時に呼ばれる
-        protected override void OnConstruct()
-        {
-            base.OnConstruct();
+            //isResident = false;
         }
 
         // デバッグ（ギズモ）表示用のイベント

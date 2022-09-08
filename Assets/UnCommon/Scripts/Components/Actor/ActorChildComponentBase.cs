@@ -16,8 +16,8 @@ namespace UnCommon
     /// <br>アクターチャイルドに対して機能提供を行なう</br>
     /// <br>必ずこのゲームオブジェクトにはActorChildがついている必要がある</br>
     /// </summary>
-    [RequireComponent(typeof(ActorChild))]
-    public abstract class ActorChildComponentBase : ComponentBase
+    [RequireComponent(typeof(ChildActor))]
+    public abstract class ChildActorComponentBase : ComponentBase, IChildActor
     {
         //---------------------------- パラメータ ----------------------------//
         #region パラメータ
@@ -34,7 +34,7 @@ namespace UnCommon
         /// このコンポーネントがついているアクターチャイルド
         /// </summary>
         [SerializeField]
-        protected ActorChild owner;
+        protected ChildActor owner;
 
         /// <summary>
         /// このコンポーネントがついているアクターチャイルドの親アクター
@@ -66,14 +66,14 @@ namespace UnCommon
             //SetComponentEventsOrder(
             //    updateOrder: 0,
             //    fixedUpdateOrder: 0);
-            owner = selfGameObject.GetComponent<ActorChild>();
-            ownerParent = owner.GetParent();
         }
 
         // エディタでパラメータなどが変更された時に呼ばれる
         protected override void OnConstruct()
         {
             base.OnConstruct();
+            owner = base.ownerGameObject.GetComponent<ChildActor>();
+            ownerParent = base.ownerGameObject.GetComponentInParent<Actor>();
         }
 
         // デバッグ（ギズモ）表示用のイベント
@@ -98,7 +98,10 @@ namespace UnCommon
         //---------------------------- インターフェース関数 ----------------------------//
         #region インターフェース関数
 
-
+        public Actor GetParent()
+        {
+            return ownerParent;
+        }
 
         #endregion
 
@@ -169,6 +172,8 @@ namespace UnCommon
         protected override async UniTask OnComponentEnabled()
         {
             await base.OnComponentEnabled();
+            owner = base.ownerGameObject.GetComponent<ChildActor>();
+            ownerParent = base.ownerGameObject.GetComponentInParent<Actor>();
         }
 
         // コンポーネントが非アクティブになった時に呼ばれる。

@@ -33,7 +33,7 @@ namespace UnCommon
         /// <summary>
         /// このコンポーネントがついているアクター
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         protected Actor owner;
 
         #endregion
@@ -61,7 +61,7 @@ namespace UnCommon
             //    updateOrder: 0,
             //    fixedUpdateOrder: 0);
             // Actorのコンポーネントから取得
-            owner = selfGameObject.GetComponent<Actor>();
+            owner = base.ownerGameObject.GetComponent<Actor>();
         }
 
         // エディタでパラメータなどが変更された時に呼ばれる
@@ -103,7 +103,7 @@ namespace UnCommon
         {
             await base.OnStart();
             // Actorのコンポーネントから取得
-            owner = selfGameObject.GetComponent<Actor>();
+            owner = base.ownerGameObject.GetComponent<Actor>();
         }
 
         // フレームの更新時に毎回呼ばれる。(OnUpdate より先に呼ばれる)

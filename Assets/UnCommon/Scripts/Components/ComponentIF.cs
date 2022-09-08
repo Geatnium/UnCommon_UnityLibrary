@@ -42,12 +42,22 @@ namespace UnCommon
         /// インターフェースが実装されているコンポーネントを持っているゲームオブジェクト
         /// </summary>
         /// <returns></returns>
-        GameObject GetGameObject();
+        GameObject GetOwnerGameObject();
 
         /// <summary>
         /// インターフェースが実装されているコンポーネントを持っているゲームオブジェクトのトランスフォーム
         /// </summary>
         /// <returns></returns>
-        Transform GetTransform();
+        Transform GetOwnerTransform();
+
+        /// <summary>
+        /// コンポーネントをデタッチして破棄する
+        /// </summary>
+        void Destroy();
+
+        /// <summary>
+        /// アタッチされているゲームオブジェクトごと破棄する
+        /// </summary>
+        void DestroyOwnerGameObject();
     }
 }

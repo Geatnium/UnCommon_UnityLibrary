@@ -4,6 +4,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using MarkupAttributes;
 using UnCommon;
+using static UnCommon.StandardUtility;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -47,22 +48,24 @@ public class ManagerTemplate : ManagerBase<IManagerTemplate>, IManagerTemplate
     protected override void OnReset()
     {
         base.OnReset();
-        //SetComponentEventsEnabled(
-        //    isUpdateEnabled: false,
-        //    isUpdateJobEnabled: false,
-        //    isLateUpdateEnabled: false,
-        //    isFixedUpdateEnabled: false,
-        //    isFixedUpdateJobEnabled: false,
-        //    isTickEnabled: false);
-        //SetComponentEventsOrder(
-        //    updateOrder: 0,
-        //    fixedUpdateOrder: 0);
     }
 
     // エディタでパラメータなどが変更された時に呼ばれる
     protected override void OnConstruct()
     {
         base.OnConstruct();
+        // このコンポーネントのイベント設定
+        SetComponentEventsEnabled(
+                isUpdateEnabled: false, // OnUpdate() を行なうか
+                isUpdateJobEnabled: false, // OnUpdateJob() を行なうか
+                isLateUpdateEnabled: false, // OnLateUpdate() を行なうか
+                isFixedUpdateEnabled: false, // OnFixedUpdate() を行なうか
+                isFixedUpdateJobEnabled: false, // OnFixedUpdateJob() を行なうか
+                isTickEnabled: false); // OnTick を行なうか
+        SetComponentEventsOrder(
+            updateOrder: 0, // Update系イベントの優先順位
+            fixedUpdateOrder: 0); // FixedUpdate系イベントの優先順位
+        isResident = false; // シーンを跨いでも破棄しないようにするか
     }
 
     // デバッグ（ギズモ）表示用のイベント

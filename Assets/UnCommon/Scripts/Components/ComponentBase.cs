@@ -53,7 +53,7 @@ namespace UnCommon
         [SerializeField, Tooltip("Tickイベントを行うかどうか。TickIntervalに指定した時間間隔で呼ばれる。毎フレームは処理しなくていいところで使う。")]
         protected bool isTickEnabled = false;
 
-        [SerializeField, Tooltip("Tickイベントが呼ばれる時間間隔（s）。フレームレートより多くは呼ばれない。")]
+        [SerializeField, Tooltip("Tickイベントが呼ばれる時間間隔（sec）。フレームレートより多くは呼ばれない。")]
         protected float tickInterval = 0.1f;
 
 
@@ -68,38 +68,23 @@ namespace UnCommon
         //---------------------------- メンバー変数 ----------------------------//
         #region メンバー変数
 
-        [Obsolete("selfGameObjectを参照すること", true)]
+        [Obsolete("ownerGameObjectを参照すること", true)]
         protected new GameObject gameObject;
 
-        [Obsolete("selfTransformを参照すること", true)]
+        [Obsolete("ownerTransformを参照すること", true)]
         protected new Transform transform;
 
         /// <summary>
         /// 自身のゲームオブジェクト
         /// </summary>
         [SerializeField, HideInInspector]
-        protected GameObject selfGameObject;
+        protected GameObject ownerGameObject;
 
         /// <summary>
         /// 自身のトランスフォーム
         /// </summary>
         [SerializeField, HideInInspector]
-        protected Transform selfTransform;
-
-        /// <summary>
-        /// OnUpdateの時間間隔（Time.deltaTime に何度もアクセスしないようにキャッシュ）
-        /// </summary>
-        protected float deltaTime;
-
-        /// <summary>
-        /// OnFixedUpdateの時間間隔（Time.fixedDeltaTime に何度もアクセスしないようにキャッシュ）
-        /// </summary>
-        protected float fixedDeltaTime;
-
-        /// <summary>
-        /// ComponentManagerのインスタンス
-        /// </summary>
-        protected IComponentManager componentManager;
+        protected Transform ownerTransform;
 
         /// <summary>
         /// Startイベントが呼び終わったか
@@ -138,8 +123,8 @@ namespace UnCommon
         private void Reset()
         {
             // 派生クラスでも使えるように取得
-            selfGameObject = base.gameObject;
-            selfTransform = base.transform;
+            ownerGameObject = base.gameObject;
+            ownerTransform = base.transform;
             // イベント発行
             OnReset();
         }
@@ -148,8 +133,8 @@ namespace UnCommon
         private void OnValidate()
         {
             // 派生クラスでも使えるように取得
-            selfGameObject = base.gameObject;
-            selfTransform = base.transform;
+            ownerGameObject = base.gameObject;
+            ownerTransform = base.transform;
             // プレイ中じゃない時だけ発行する
             if (!Application.isPlaying)
             {
@@ -231,100 +216,131 @@ namespace UnCommon
         public virtual void SetUpdateEnabled(bool isUpdateEnabled)
         {
             this.isUpdateEnabled = isUpdateEnabled;
-            // 有効にするときは、Updateイベントが行われるように登録する
-            if (isUpdateEnabled)
-            {
-                componentManager.AddUpdateEvent(
-                        updateOrder: updateOrder,
-                        registerUpdateEvent: OnUpdate,
-                        registerUpdateJobEvent: isUpdateJobEnabled ? OnUpdateJob : null);
-            }
-            else // 無効にするときは、Updateイベントを行わないようにから除外する
-            {
-                componentManager.RemoveUpdateEvent(
-                        updateOrder: updateOrder,
-                        removeUpdateEvent: OnUpdate,
-                        removeUpdateJobEvent: isUpdateJobEnabled ? OnUpdateJob : null);
-            }
+            ServiceLocator.Execute<IComponentManager>(
+                (componentManager) =>
+                {
+                    // 有効にするときは、Updateイベントが行われるように登録する
+                    if (isUpdateEnabled)
+                    {
+                        componentManager.AddUpdateEvent(
+                                updateOrder: updateOrder,
+                                registerUpdateEvent: OnUpdate,
+                                registerUpdateJobEvent: isUpdateJobEnabled ? OnUpdateJob : null);
+                    }
+                    else // 無効にするときは、Updateイベントを行わないようにから除外する
+                    {
+                        componentManager.RemoveUpdateEvent(
+                                updateOrder: updateOrder,
+                                removeUpdateEvent: OnUpdate,
+                                removeUpdateJobEvent: isUpdateJobEnabled ? OnUpdateJob : null);
+                    }
+                });
         }
 
         public virtual void SetLateUpdateEnabled(bool isLateUpdateEnabled)
         {
             this.isLateUpdateEnabled = isLateUpdateEnabled;
-            // 有効にするときは、LateUpdateイベントが行われるように登録する
-            if (isLateUpdateEnabled)
-            {
-                componentManager.AddLateUpdateEvent(
-                        updateOrder: updateOrder,
-                        registerLateUpdateEvent: OnLateUpdate);
-            }
-            else // 無効にするときは、LateUpdateイベントを行わないようにから除外する
-            {
-                componentManager.RemoveLateUpdateEvent(
-                        updateOrder: updateOrder,
-                        removeLateUpdateEvent: OnLateUpdate);
-            }
+            ServiceLocator.Execute<IComponentManager>(
+                (componentManager) =>
+                {
+                    // 有効にするときは、LateUpdateイベントが行われるように登録する
+                    if (isLateUpdateEnabled)
+                    {
+                        componentManager.AddLateUpdateEvent(
+                                updateOrder: updateOrder,
+                                registerLateUpdateEvent: OnLateUpdate);
+                    }
+                    else // 無効にするときは、LateUpdateイベントを行わないようにから除外する
+                    {
+                        componentManager.RemoveLateUpdateEvent(
+                                updateOrder: updateOrder,
+                                removeLateUpdateEvent: OnLateUpdate);
+                    }
+                });
         }
 
         public virtual void SetFixedUpdateEnabled(bool isFixedUpdateEnabled)
         {
             this.isFixedUpdateEnabled = isFixedUpdateEnabled;
-            // 有効にするときは、FixedUpdateイベントが行われるように登録する
-            if (isFixedUpdateEnabled)
-            {
-                componentManager.AddFixedUpdateEvent(
-                        fixedUpdateOrder: fixedUpdateOrder,
-                        registerFixedUpdateEvent: OnFixedUpdate,
-                        registerFixedUpdateJobEvent: isFixedUpdateJobEnabled ? OnFixedUpdateJob : null);
-            }
-            else // 無効にするときは、FixedUpdateイベントを行わないようにから除外する
-            {
-                componentManager.RemoveFixedUpdateEvent(
-                        fixedUpdateOrder: fixedUpdateOrder,
-                        removeFixedUpdateEvent: OnFixedUpdate,
-                        removeFixedUpdateJobEvent: isFixedUpdateJobEnabled ? OnFixedUpdateJob : null);
-            }
+            ServiceLocator.Execute<IComponentManager>(
+                (componentManager) =>
+                {
+                    // 有効にするときは、FixedUpdateイベントが行われるように登録する
+                    if (isFixedUpdateEnabled)
+                    {
+                        componentManager.AddFixedUpdateEvent(
+                                fixedUpdateOrder: fixedUpdateOrder,
+                                registerFixedUpdateEvent: OnFixedUpdate,
+                                registerFixedUpdateJobEvent: isFixedUpdateJobEnabled ? OnFixedUpdateJob : null);
+                    }
+                    else // 無効にするときは、FixedUpdateイベントを行わないようにから除外する
+                    {
+                        componentManager.RemoveFixedUpdateEvent(
+                                fixedUpdateOrder: fixedUpdateOrder,
+                                removeFixedUpdateEvent: OnFixedUpdate,
+                                removeFixedUpdateJobEvent: isFixedUpdateJobEnabled ? OnFixedUpdateJob : null);
+                    }
+                });
         }
 
         public virtual void SetTickEnabled(bool isTickEnabled)
         {
             this.isTickEnabled = isTickEnabled;
-            // 有効にするときは、Tickイベントが行われるように登録する
-            if (isTickEnabled)
-            {
-                componentManager.AddTickEvent(
-                        registerTickEvent: OnTick,
-                        tickInterval: tickInterval);
-            }
-            else // 無効にするときは、Tickイベントを行わないようにから除外する
-            {
-                componentManager.RemoveTickEvent(
-                    removeTickEvent: OnTick);
-            }
+            ServiceLocator.Execute<IComponentManager>(
+               (componentManager) =>
+               {
+                   // 有効にするときは、Tickイベントが行われるように登録する
+                   if (isTickEnabled)
+                   {
+                       componentManager.AddTickEvent(
+                               registerTickEvent: OnTick,
+                               tickInterval: tickInterval);
+                   }
+                   else // 無効にするときは、Tickイベントを行わないようにから除外する
+                   {
+                       componentManager.RemoveTickEvent(
+                           removeTickEvent: OnTick);
+                   }
+               });
         }
 
         public virtual void SetTickInterval(int tickInterval)
         {
             this.tickInterval = tickInterval;
-            // tickInterbal更新のためすでに登録されていたら一回除外してから再度登録する
-            if (isTickEnabled)
-            {
-                componentManager.RemoveTickEvent(
-                    removeTickEvent: OnTick);
-                componentManager.AddTickEvent(
-                    registerTickEvent: OnTick,
-                    tickInterval: this.tickInterval);
-            }
+            ServiceLocator.Execute<IComponentManager>(
+               (componentManager) =>
+               {
+                   // tickInterbal更新のためすでに登録されていたら一回除外してから再度登録する
+                   if (isTickEnabled)
+                   {
+                       componentManager.RemoveTickEvent(
+                           removeTickEvent: OnTick);
+                       componentManager.AddTickEvent(
+                           registerTickEvent: OnTick,
+                           tickInterval: this.tickInterval);
+                   }
+               });
         }
 
-        public GameObject GetGameObject()
+        public GameObject GetOwnerGameObject()
         {
-            return selfGameObject;
+            return ownerGameObject;
         }
 
-        public Transform GetTransform()
+        public Transform GetOwnerTransform()
         {
-            return selfTransform;
+            return ownerTransform;
+        }
+
+
+        public void Destroy()
+        {
+            Destroy(this);
+        }
+
+        public void DestroyOwnerGameObject()
+        {
+            Destroy(ownerGameObject);
         }
 
         #endregion
@@ -341,8 +357,8 @@ namespace UnCommon
         protected virtual async UniTask OnAwake()
         {
             // 自身の参照を持っておく
-            selfGameObject = base.gameObject;
-            selfTransform = base.transform;
+            ownerGameObject = base.gameObject;
+            ownerTransform = base.transform;
         }
 
         /// <summary>
@@ -359,7 +375,6 @@ namespace UnCommon
         /// </summary>
         protected virtual void OnUpdateJob()
         {
-            deltaTime = Time.deltaTime;
         }
 
         /// <summary>
@@ -370,7 +385,6 @@ namespace UnCommon
         /// <returns></returns>
         protected virtual async UniTask OnUpdate()
         {
-            deltaTime = Time.deltaTime;
         }
 
         /// <summary>
@@ -395,7 +409,6 @@ namespace UnCommon
         /// </summary>
         protected virtual void OnFixedUpdateJob()
         {
-            fixedDeltaTime = Time.fixedDeltaTime;
         }
 
         /// <summary>
@@ -406,7 +419,6 @@ namespace UnCommon
         /// <returns></returns>
         protected virtual async UniTask OnFixedUpdate()
         {
-            fixedDeltaTime = Time.fixedDeltaTime;
         }
 
         /// <summary>
@@ -428,19 +440,24 @@ namespace UnCommon
         /// <returns></returns>
         protected virtual async UniTask OnComponentDisabled()
         {
-            // 非アクティブのときは、イベントが呼ばれないよう除外
-            componentManager.RemoveUpdateEvent(
-                    updateOrder: updateOrder,
-                    removeUpdateEvent: OnUpdate,
-                    isUpdateJobEnabled ? OnUpdateJob : null);
-            componentManager.RemoveLateUpdateEvent(
-                    updateOrder: updateOrder,
-                    removeLateUpdateEvent: OnLateUpdate);
-            componentManager.RemoveTickEvent(removeTickEvent: OnTick);
-            componentManager.RemoveFixedUpdateEvent(
-                    fixedUpdateOrder: fixedUpdateOrder,
-                    removeFixedUpdateEvent: OnFixedUpdate,
-                    isFixedUpdateJobEnabled ? OnFixedUpdateJob : null);
+            // そもそもComponentManagerが先に破棄されていたら、イベントも解除されているので何もしない
+            ServiceLocator.Execute<IComponentManager>(
+               (componentManager) =>
+               {
+                   // 非アクティブのときは、イベントが呼ばれないよう除外
+                   componentManager.RemoveUpdateEvent(
+                   updateOrder: updateOrder,
+                   removeUpdateEvent: OnUpdate,
+                   isUpdateJobEnabled ? OnUpdateJob : null);
+                   componentManager.RemoveLateUpdateEvent(
+                           updateOrder: updateOrder,
+                           removeLateUpdateEvent: OnLateUpdate);
+                   componentManager.RemoveTickEvent(removeTickEvent: OnTick);
+                   componentManager.RemoveFixedUpdateEvent(
+                           fixedUpdateOrder: fixedUpdateOrder,
+                           removeFixedUpdateEvent: OnFixedUpdate,
+                           isFixedUpdateJobEnabled ? OnFixedUpdateJob : null);
+               });
         }
 
         /// <summary>
@@ -450,22 +467,24 @@ namespace UnCommon
         protected virtual async UniTask OnComponentDestroyed()
         {
             // そもそもComponentManagerが先に破棄されていたら、イベントも解除されているので何もしない
-            if (!componentManager.IsValid()) return;
-
-            // 破棄されたら、イベントが呼ばれないよう除外
-            componentManager.RemoveUpdateEvent(
+            ServiceLocator.Execute<IComponentManager>(
+                (componentManager) =>
+                {
+                    // 破棄されたら、イベントが呼ばれないよう除外
+                    componentManager.RemoveUpdateEvent(
                     updateOrder: updateOrder,
                     removeUpdateEvent: OnUpdate,
                     isUpdateJobEnabled ? OnUpdateJob : null);
-            componentManager.RemoveLateUpdateEvent(
-                    updateOrder: updateOrder,
-                    removeLateUpdateEvent: OnLateUpdate);
-            componentManager.RemoveTickEvent(
-                    removeTickEvent: OnTick);
-            componentManager.RemoveFixedUpdateEvent(
-                    fixedUpdateOrder: fixedUpdateOrder,
-                    removeFixedUpdateEvent: OnFixedUpdate,
-                    isFixedUpdateJobEnabled ? OnFixedUpdateJob : null);
+                    componentManager.RemoveLateUpdateEvent(
+                            updateOrder: updateOrder,
+                            removeLateUpdateEvent: OnLateUpdate);
+                    componentManager.RemoveTickEvent(
+                            removeTickEvent: OnTick);
+                    componentManager.RemoveFixedUpdateEvent(
+                            fixedUpdateOrder: fixedUpdateOrder,
+                            removeFixedUpdateEvent: OnFixedUpdate,
+                            isFixedUpdateJobEnabled ? OnFixedUpdateJob : null);
+                });
         }
 
         // 起動イベントを呼ぶ　派生クラスではOnAwakeをオーバーライドする
@@ -480,8 +499,6 @@ namespace UnCommon
             // Startイベントはインスタンスされてから一回しか行われない
             if (isFinishedStartEvent) return;
             NativeLeakDetection.Mode = NativeLeakDetectionMode.EnabledWithStackTrace;
-            // ComponentManager のインスタンスを取得
-            componentManager = ServiceLocator.GetInstance<IComponentManager>();
             // イベント発行
             OnStart().Forget();
             OnComponentEnabled().Forget();

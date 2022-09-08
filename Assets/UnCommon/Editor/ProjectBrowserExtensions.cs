@@ -82,14 +82,24 @@ namespace UnCommon
         private const string NewActorComponentScriptFileName = "NewActorComponentScript.cs";
 
         /// <summary>
-        ///  ActorChildComponentスクリプトテンプレートの元ファイル名
+        ///  ChildActorComponentスクリプトテンプレートの元ファイル名
         /// </summary>
-        private const string ActorChildComponentScriptTemplateOriginalFileName = "ActorChildComponentTemplate.cs";
+        private const string ChildActorComponentScriptTemplateOriginalFileName = "ChildActorComponentTemplate.cs";
 
         /// <summary>
-        /// ActorComponentスクリプトテンプレートの新規ファイル名
+        /// ChildActorComponentスクリプトテンプレートの新規ファイル名
         /// </summary>
-        private const string NewActorChildComponentScriptFileName = "NewActorChildComponentScript.cs";
+        private const string NewChildActorComponentScriptFileName = "NewChildActorComponentScript.cs";
+
+        /// <summary>
+        ///  WidgetComponentスクリプトテンプレートの元ファイル名
+        /// </summary>
+        private const string WidgetComponentScriptTemplateOriginalFileName = "WidgetComponentTemplate.cs";
+
+        /// <summary>
+        /// WidgetComponentスクリプトテンプレートの新規ファイル名
+        /// </summary>
+        private const string NewWidgetComponentScriptFileName = "NewWidgetComponentScript.cs";
 
         /// <summary>
         ///  Managerスクリプトテンプレートの元ファイル名
@@ -126,7 +136,7 @@ namespace UnCommon
         /// <br>CsTemplate.cs を複製したものであり、</br>
         /// <br>普通に [Create > C# Script] から作成すると文字化けするのを防ぐ。</br>
         /// </summary>
-        [MenuItem("Assets/Create/Create Empty C# Script", false, 0)]
+        [MenuItem("Assets/Create/UnCommon/Create Empty C# Script", false, 0)]
         private static void CreateEmptyCsScript()
         {
             // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）
@@ -142,7 +152,7 @@ namespace UnCommon
         /// <br>NewBehaviourScriptTemplate.cs を複製したものであり、</br>
         /// <br>普通に [Create > C# Script] から作成すると文字化けするのを防ぐ。</br>
         /// </summary>
-        [MenuItem("Assets/Create/Create Mono Behaviour Script", false, 0)]
+        [MenuItem("Assets/Create/UnCommon/Create Mono Behaviour Script", false, 0)]
         private static void CreateNewBehaviourScript()
         {
             // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）
@@ -157,7 +167,7 @@ namespace UnCommon
         /// <br>新規Componentスクリプトを作成</br>
         /// <br>ComponentTemplate.cs を複製したもの</br>
         /// </summary>
-        [MenuItem("Assets/Create/Create Component Script", false, 0)]
+        [MenuItem("Assets/Create/UnCommon/Create Component Script", false, 0)]
         private static void CreateNewComponentScript()
         {
             // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）
@@ -172,7 +182,7 @@ namespace UnCommon
         /// <br>新規Componentのインターフェースを作成</br>
         /// <br>ComponentTemplateIF.cs を複製したもの</br>
         /// </summary>
-        [MenuItem("Assets/Create/Create Component Interface Script", false, 0)]
+        [MenuItem("Assets/Create/UnCommon/Create Component Interface Script", false, 0)]
         private static void CreateNewComponentIFScript()
         {
             // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）
@@ -187,7 +197,7 @@ namespace UnCommon
         /// <br>新規ActorComponentスクリプトを作成</br>
         /// <br>ActorComponentTemplate.cs を複製したもの</br>
         /// </summary>
-        [MenuItem("Assets/Create/Create Actor Component Script", false, 0)]
+        [MenuItem("Assets/Create/UnCommon/Create Actor Component Script", false, 0)]
         private static void CreateNewActorComponentScript()
         {
             // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）
@@ -199,25 +209,40 @@ namespace UnCommon
         }
 
         /// <summary>
-        /// <br>新規ActorChildComponentスクリプトを作成</br>
-        /// <br>ActorChildComponentTemplate.cs を複製したもの</br>
+        /// <br>新規ChildActorComponentスクリプトを作成</br>
+        /// <br>ChildActorComponentTemplate.cs を複製したもの</br>
         /// </summary>
-        [MenuItem("Assets/Create/Create Actor Child Component Script", false, 0)]
-        private static void CreateNewActorChildComponentScript()
+        [MenuItem("Assets/Create/UnCommon/Create Child Actor Component Script", false, 0)]
+        private static void CreateNewChildActorComponentScript()
         {
             // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）
             if (Selection.assetGUIDs == null) return;
             // 選択しているファイルの一つ目のGUIDからフォルダを取得
             string selectedFolderPath = GetParentFolderOfSelectionGUID();
             // スクリプトのテンプレート複製
-            CopyAssetByAssetName(ActorChildComponentScriptTemplateOriginalFileName, selectedFolderPath, NewActorChildComponentScriptFileName);
+            CopyAssetByAssetName(ChildActorComponentScriptTemplateOriginalFileName, selectedFolderPath, NewChildActorComponentScriptFileName);
+        }
+
+        /// <summary>
+        /// <br>新規WidgetComponentスクリプトを作成</br>
+        /// <br>WidgetComponentTemplate.cs を複製したもの</br>
+        /// </summary>
+        [MenuItem("Assets/Create/UnCommon/Create Widget Component Script", false, 0)]
+        private static void CreateNewWidgetComponentScript()
+        {
+            // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）
+            if (Selection.assetGUIDs == null) return;
+            // 選択しているファイルの一つ目のGUIDからフォルダを取得
+            string selectedFolderPath = GetParentFolderOfSelectionGUID();
+            // スクリプトのテンプレート複製
+            CopyAssetByAssetName(WidgetComponentScriptTemplateOriginalFileName, selectedFolderPath, NewWidgetComponentScriptFileName);
         }
 
         /// <summary>
         /// <br>新規Managerスクリプトを作成</br>
         /// <br>ManagerTemplate.cs を複製したもの</br>
         /// </summary>
-        [MenuItem("Assets/Create/Create Manager Script", false, 0)]
+        [MenuItem("Assets/Create/UnCommon/Create Manager Script", false, 0)]
         private static void CreateNewManagerScript()
         {
             // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）
@@ -232,7 +257,7 @@ namespace UnCommon
         /// <br>新規Managerのインターフェースを作成</br>
         /// <br>ManagerTemplate.cs を複製したもの</br>
         /// </summary>
-        [MenuItem("Assets/Create/Create Manager Interface Script", false, 0)]
+        [MenuItem("Assets/Create/UnCommon/Create Manager Interface Script", false, 0)]
         private static void CreateNewManagerIFScript()
         {
             // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）
@@ -246,7 +271,7 @@ namespace UnCommon
         /// <summary>
         /// 新規テキストファイルを作成する
         /// </summary>
-        [MenuItem("Assets/Create/TextFile", false, 0)]
+        [MenuItem("Assets/Create/UnCommon/TextFile", false, 0)]
         private static void CreateTextFile()
         {
             // なぜか選択されているものが無ければ何もしない（無いことはないと思うけど）

@@ -1,31 +1,19 @@
 ﻿using System;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace UnCommon
 {
+
     // ------------------------------------------------------------
     // intのハッシュセット
     // ------------------------------------------------------------
     [Serializable]
     public class IntHashSet : SerializableHashSet<int>
     {
-        // Addするときに重複していると追加できないので、デフォルト値を決めておく
-        public override void Add(int item)
+        IntHashSet()
         {
-            if (!_collection.Contains(item))
-            {
-                _collection.Add(item);
-            }
-            else
-            {
-                if (!_collection.Contains(0))
-                {
-                    _collection.Add(0);
-                }
-                else
-                {
-                    DebugLogger.LogWarning($"要素が重複しているため追加できません。");
-                }
-            }
+            defaultValue = 0;
         }
     }
 
@@ -35,24 +23,9 @@ namespace UnCommon
     [Serializable]
     public class StringHashSet : SerializableHashSet<string>
     {
-        // Addするときに重複していると追加できないので、デフォルト値を決めておく
-        public override void Add(string item)
+        StringHashSet()
         {
-            if (!_collection.Contains(item))
-            {
-                _collection.Add(item);
-            }
-            else
-            {
-                if (!_collection.Contains(""))
-                {
-                    _collection.Add("");
-                }
-                else
-                {
-                    DebugLogger.LogWarning($"要素が重複しているため追加できません。");
-                }
-            }
+            defaultValue = "";
         }
     }
 
@@ -62,54 +35,55 @@ namespace UnCommon
     [Serializable]
     public class NameHashSet : SerializableHashSet<Name>
     {
-        // Addするときに重複していると追加できないので、デフォルト値を決めておく
-        public override void Add(Name item)
+        NameHashSet()
         {
-            if (!_collection.Contains(item))
-            {
-                _collection.Add(item);
-            }
-            else
-            {
-                if (!_collection.Contains("None"))
-                {
-                    _collection.Add("None");
-                }
-                else
-                {
-                    DebugLogger.LogWarning($"要素が重複しているため追加できません。");
-                }
-            }
+            defaultValue = Name.None;
         }
     }
 
     // ------------------------------------------------------------
-    // 辞書配列のサンプル（int to string）
+    // int to string の辞書配列
     // ------------------------------------------------------------
     [Serializable]
-    public class IntStringPair : SerializablePair<int, string> { }
+    public class IntToStringPair : SerializablePair<int, string> { }
 
     [Serializable]
-    public class IntStringDictionary : SerializableDictionay<int, string, IntStringPair>
+    public class IntToStringDictionary : SerializableDictionay<int, string, IntToStringPair>
     {
-        // Addするときに重複していると追加できないので、デフォルト値を決めておく
-        public override void Add(int key, string value)
+        IntToStringDictionary()
         {
-            if (!_collection.ContainsKey(key))
-            {
-                _collection.Add(key, value);
-            }
-            else
-            {
-                if (!_collection.ContainsKey(0))
-                {
-                    _collection.Add(0, value);
-                }
-                else
-                {
-                    DebugLogger.LogWarning($"Keyが重複しているため追加できません。");
-                }
-            }
+            defaultKey = 0;
         }
     }
+
+    // ------------------------------------------------------------
+    // Name to GameObject の辞書配列
+    // ------------------------------------------------------------
+    [Serializable]
+    public class NameToGameObjectPair : SerializablePair<Name, GameObject> { }
+
+    [Serializable]
+    public class NameToGameObejctDictionary : SerializableDictionay<Name, GameObject, NameToGameObjectPair>
+    {
+        NameToGameObejctDictionary()
+        {
+            defaultKey = "None";
+        }
+    }
+
+    // ------------------------------------------------------------
+    // Name to AssetReference の辞書配列
+    // ------------------------------------------------------------
+    [Serializable]
+    public class NameToAssetReferencePair : SerializablePair<Name, AssetReference> { }
+
+    [Serializable]
+    public class NameToAssetReferenceDictionary : SerializableDictionay<Name, AssetReference, NameToAssetReferencePair>
+    {
+        NameToAssetReferenceDictionary()
+        {
+            defaultKey = "None";
+        }
+    }
+
 }
