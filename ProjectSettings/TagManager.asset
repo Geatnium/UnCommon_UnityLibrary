@@ -12,25 +12,25 @@ TagManager:
   - Water
   - UI
   - 
+  - Dynamic
+  - Static
   - 
   - 
   - 
   - 
+  - Character
+  - Vehicle
   - 
   - 
   - 
   - 
+  - CharacterBody
+  - VehicleBody
   - 
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Trigger
   - 
   - 
   - 

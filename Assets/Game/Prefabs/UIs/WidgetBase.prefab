@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 364257257612210929}
   - component: {fileID: 1564946293131976093}
   - component: {fileID: 4871090508279981946}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 7102696564024997946}
   - component: {fileID: 3408879234866020063}
   - component: {fileID: 603020896129428566}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -244,6 +244,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WidgetBase
       objectReference: {fileID: 0}
+    - target: {fileID: 4845313579307179512, guid: 5cd5661cf9a044efa84d0e09ac41c377,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cd5661cf9a044efa84d0e09ac41c377, type: 3}
 --- !u!1 &871862776772903542 stripped
@@ -272,6 +277,30 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-7374429058885485995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871862776772903542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caed7b9e9f2a143afb8769c71a88a0e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUpdateEnabled: 0
+  isUpdateJobEnabled: 0
+  isLateUpdateEnabled: 0
+  updateOrder: 0
+  isFixedUpdateEnabled: 0
+  isFixedUpdateJobEnabled: 0
+  fixedUpdateOrder: 0
+  isTickEnabled: 0
+  tickInterval: 0.1
+  drawsDebugGizmos: 1
+  ownerGameObject: {fileID: 871862776772903542}
+  ownerTransform: {fileID: 1117311927151210236}
 --- !u!114 &-3972682571143324821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,30 +328,6 @@ MonoBehaviour:
   - clip: {fileID: 0}
     name: Close
     defaultState: 0
---- !u!114 &-7374429058885485995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 871862776772903542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: caed7b9e9f2a143afb8769c71a88a0e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUpdateEnabled: 0
-  isUpdateJobEnabled: 0
-  isLateUpdateEnabled: 0
-  updateOrder: 0
-  isFixedUpdateEnabled: 0
-  isFixedUpdateJobEnabled: 0
-  fixedUpdateOrder: 0
-  isTickEnabled: 0
-  tickInterval: 0.1
-  drawsDebugGizmos: 1
-  ownerGameObject: {fileID: 871862776772903542}
-  ownerTransform: {fileID: 1117311927151210236}
 --- !u!4 &1117311927151210236 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4658416168991977842, guid: 5cd5661cf9a044efa84d0e09ac41c377,

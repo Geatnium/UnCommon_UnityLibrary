@@ -75,13 +75,13 @@ namespace UnCommon
         protected new Transform transform;
 
         /// <summary>
-        /// 自身のゲームオブジェクト
+        /// このコンポーネントがアタッチされているゲームオブジェクト
         /// </summary>
         [SerializeField, HideInInspector]
         protected GameObject ownerGameObject;
 
         /// <summary>
-        /// 自身のトランスフォーム
+        /// このコンポーネントがアタッチされているゲームオブジェクトのトランスフォーム
         /// </summary>
         [SerializeField, HideInInspector]
         protected Transform ownerTransform;

@@ -53,7 +53,8 @@ namespace UnCommon
         // エディタでパラメータなどが変更された時に呼ばれる
         protected override void OnConstruct()
         {
-            base.OnConstruct();            
+            base.OnConstruct();
+            myName = ownerGameObject.name;
         }
 
         // デバッグ（ギズモ）表示用のイベント
@@ -73,12 +74,12 @@ namespace UnCommon
         /// <summary>
         /// このアクターの名前
         /// </summary>
-        private Name actorName;
+        private Name myName;
 
         /// <summary>
-        /// 自身を生成したゲームオブジェクト
+        /// このアクターを生成したゲームオブジェクト
         /// </summary>
-        private GameObject selfSpawner;
+        private GameObject spawner;
 
         #endregion
 
@@ -96,23 +97,23 @@ namespace UnCommon
 
         public void SetName(Name name)
         {
-            actorName = name;
+            myName = name;
             ownerGameObject.name = name;
         }
 
         public Name GetName()
         {
-            return actorName;
+            return myName;
         }
 
         public void SetSpawner(GameObject gameObject)
         {
-            selfSpawner = gameObject;
+            spawner = gameObject;
         }
 
         public GameObject GetSpawner()
         {
-            return selfSpawner;
+            return spawner;
         }
 
         public void SetTags(NameHashSet tags)
@@ -145,7 +146,6 @@ namespace UnCommon
         protected override async UniTask OnAwake()
         {
             await base.OnAwake();
-            actorName = ownerGameObject.name;
         }
 
         // コンポーネントがインスタンスされてから、次のフレームの直前に一回だけ呼ばれる。

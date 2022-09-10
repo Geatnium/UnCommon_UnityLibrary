@@ -31,16 +31,16 @@ namespace UnCommon
         #region メンバー変数
 
         /// <summary>
-        /// このコンポーネントがついているアクターチャイルド
+        /// このコンポーネントがついているチャイルドアクター
         /// </summary>
-        [SerializeField]
-        protected ChildActor owner;
+        [SerializeField, HideInInspector]
+        protected ChildActor ownerChildActor;
 
         /// <summary>
         /// このコンポーネントがついているアクターチャイルドの親アクター
         /// </summary>
-        [SerializeField]
-        protected Actor ownerParent;
+        [SerializeField, HideInInspector]
+        protected Actor ownerParentActor;
 
         #endregion
 
@@ -72,8 +72,8 @@ namespace UnCommon
         protected override void OnConstruct()
         {
             base.OnConstruct();
-            owner = base.ownerGameObject.GetComponent<ChildActor>();
-            ownerParent = base.ownerGameObject.GetComponentInParent<Actor>();
+            ownerChildActor = ownerGameObject.GetComponent<ChildActor>();
+            ownerParentActor = ownerGameObject.GetComponentInParent<Actor>();
         }
 
         // デバッグ（ギズモ）表示用のイベント
@@ -100,7 +100,7 @@ namespace UnCommon
 
         public Actor GetParent()
         {
-            return ownerParent;
+            return ownerParentActor;
         }
 
         #endregion
@@ -172,8 +172,8 @@ namespace UnCommon
         protected override async UniTask OnComponentEnabled()
         {
             await base.OnComponentEnabled();
-            owner = base.ownerGameObject.GetComponent<ChildActor>();
-            ownerParent = base.ownerGameObject.GetComponentInParent<Actor>();
+            ownerChildActor = base.ownerGameObject.GetComponent<ChildActor>();
+            ownerParentActor = base.ownerGameObject.GetComponentInParent<Actor>();
         }
 
         // コンポーネントが非アクティブになった時に呼ばれる。

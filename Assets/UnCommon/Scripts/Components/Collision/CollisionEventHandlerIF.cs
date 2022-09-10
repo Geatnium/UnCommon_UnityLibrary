@@ -14,7 +14,7 @@ public interface ICollisionEventHandler : IEventSystemHandler
     /// <param name="other">当たったコライダーのゲームオブジェクト</param>
     /// <param name="otherRootObject">当たったコライダーのルートオブジェクト</param>
     /// <param name="hitResult">ヒット情報</param>
-    void OnCollisionHitEnter(ColliderEvent ownerCollider, GameObject other, Actor othersActor, Collision hitResult);
+    void OnCollisionHitEnter(CollisionEvent ownerCollider, GameObject other, Actor othersActor, Collision hitResult);
 
     /// <summary>
     /// 入れ子のコライダーが他のコライダーに触れている間に呼ばれる
@@ -23,7 +23,7 @@ public interface ICollisionEventHandler : IEventSystemHandler
     /// <param name="other">触れているコライダー</param>
     /// <param name="otherRootObject">触れているコライダーのルートオブジェクト</param>
     /// <param name="collision">ヒット情報</param>
-    void OnCollisionHitting(ColliderEvent ownerCollider, GameObject other, Actor othersActor, Collision hitResult);
+    void OnCollisionHitting(CollisionEvent ownerCollider, GameObject other, Actor othersActor, Collision hitResult);
 
     /// <summary>
     /// 入れ子のコライダーが他のコライダーに触れていた状態から離れた時に呼ばれる
@@ -32,5 +32,5 @@ public interface ICollisionEventHandler : IEventSystemHandler
     /// <param name="other">離れたコライダー</param>
     /// <param name="otherRootObject">離れたコライダーを持っているルートオブジェクト</param>
     /// <param name="collision">ヒット情報</param>
-    void OnCollisionHitExit(ColliderEvent ownerCollider, GameObject other, Actor othersActor, Collision hitResult);
+    void OnCollisionHitExit(CollisionEvent ownerCollider, GameObject other, Actor othersActor, Collision hitResult);
 }

@@ -20,7 +20,7 @@ namespace UnCommon
         //---------------------------- パラメータ ----------------------------//
         #region パラメータ
 
-        [Foldout("ActorChild")]
+        [Foldout("Child Actor")]
 
         [SerializeField, Tooltip("タグ")]
         private NameHashSet tags;
@@ -35,7 +35,7 @@ namespace UnCommon
         /// 親のアクター
         /// </summary>
         [SerializeField, HideInInspector]
-        private Actor parent;
+        private Actor parentActor;
 
         #endregion
 
@@ -68,7 +68,6 @@ namespace UnCommon
         protected override void OnConstruct()
         {
             base.OnConstruct();
-            parent = ownerGameObject.GetComponentInParent<Actor>();
         }
 
         // デバッグ（ギズモ）表示用のイベント
@@ -95,7 +94,7 @@ namespace UnCommon
 
         public Actor GetParent()
         {
-            return parent;
+            return parentActor;
         }
 
         public void SetTags(NameHashSet tags)
@@ -134,6 +133,8 @@ namespace UnCommon
         protected override async UniTask OnStart()
         {
             await base.OnStart();
+            parentActor = ownerGameObject.GetComponentInParent<Actor>();
+
         }
 
         // フレームの更新時に毎回呼ばれる。(OnUpdate より先に呼ばれる)

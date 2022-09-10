@@ -113,8 +113,8 @@ namespace UnCommon
             ownerGameObject.SetActive(true);
             simpleAnimation = GetComponent<SimpleAnimation>();
             ownerGameObject.Execute<IWidgetComponent>(
-                ExecuteType.AllComponents,
-                (r) => r.OnStartOpen());
+               ExecuteType.AllComponents,
+               (r) => r.OnStartOpen());
             if (playsAnimation)
             {
                 Open(animationPlayRate).Forget();
@@ -122,8 +122,8 @@ namespace UnCommon
             else
             {
                 ownerGameObject.Execute<IWidgetComponent>(
-                    ExecuteType.AllComponents,
-                    (r) => r.OnFinishedOpen());
+                   ExecuteType.AllComponents,
+                   (r) => r.OnFinishedOpen());
             }
             isShowing = true;
         }
@@ -133,15 +133,15 @@ namespace UnCommon
             ownerGameObject.SetActive(true);
             await PlayAnimation(OpenAnimationState, animationPlayRate);
             ownerGameObject.Execute<IWidgetComponent>(
-                ExecuteType.AllComponents,
-                (r) => r.OnFinishedOpen());
+               ExecuteType.AllComponents,
+               (r) => r.OnFinishedOpen());
         }
 
         public void Close(bool playsAnimation = true, float animationPlayRate = 1.0f, Action finishedCallback = null)
         {
             ownerGameObject.Execute<IWidgetComponent>(
-                ExecuteType.AllComponents,
-                (r) => r.OnStartClose());
+               ExecuteType.AllComponents,
+               (r) => r.OnStartClose());
             if (playsAnimation)
             {
                 Close(animationPlayRate).Forget();
@@ -149,8 +149,8 @@ namespace UnCommon
             else
             {
                 ownerGameObject.Execute<IWidgetComponent>(
-                    ExecuteType.AllComponents,
-                    (r) => r.OnFinishedClose());
+                   ExecuteType.AllComponents,
+                   (r) => r.OnFinishedClose());
                 ownerGameObject.SetActive(false);
                 isShowing = false;
             }
@@ -160,8 +160,8 @@ namespace UnCommon
         {
             await PlayAnimation(CloseAnimationState, animationPlayRate);
             ownerGameObject.Execute<IWidgetComponent>(
-                ExecuteType.AllComponents,
-                (r) => r.OnFinishedClose());
+               ExecuteType.AllComponents,
+               (r) => r.OnFinishedClose());
             ownerGameObject.SetActive(false);
             isShowing = false;
         }
@@ -191,7 +191,7 @@ namespace UnCommon
             // 指定されたアニメーションがあるかチェック
             if (simpleAnimation.GetState(playName) == null)
             {
-                DebugLogger.LogWarning($"{ownerGameObject.name} に {playName} というアニメーションはありません！");
+                DebugLogger.LogWarning($"{ ownerGameObject.name} に {playName} というアニメーションはありません！");
                 animationFinishedCallback?.Invoke(); // なければ即実行
                 return;
             }
@@ -247,7 +247,7 @@ namespace UnCommon
         {
             await base.OnStart();
             Canvas[] canvases = GetComponentsInChildren<Canvas>();
-            foreach(Canvas canvas in canvases)
+            foreach (Canvas canvas in canvases)
             {
                 canvas.worldCamera = Camera.main;
             }

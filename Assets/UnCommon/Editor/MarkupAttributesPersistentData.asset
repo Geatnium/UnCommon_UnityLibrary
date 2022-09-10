@@ -32,13 +32,13 @@ MonoBehaviour:
   - key: UnCommon.Actor/Debug
     value: 0
   - key: UnCommon.Actor/Actor
-    value: 0
+    value: 1
   - key: UnCommon.ChildActor/Component Event
     value: 0
   - key: UnCommon.ChildActor/Debug
     value: 0
   - key: UnCommon.ChildActor/ActorChild
-    value: 0
+    value: 1
   - key: UnCommon.SceneManager/Component Event
     value: 0
   - key: UnCommon.SceneManager/Debug
@@ -62,5 +62,15 @@ MonoBehaviour:
   - key: UnCommon.Widget/Component Event/Tick
     value: 0
   - key: UnCommon.UIManager/Setup/Fade
+    value: 1
+  - key: UnCommon.CollisionEvent/Component Event
     value: 0
+  - key: UnCommon.CollisionEvent/Debug
+    value: 0
+  - key: UnCommon.CollisionEvent/Collider
+    value: 0
+  - key: UnCommon.ChildActor/Child Actor
+    value: 1
+  - key: UnCommon.CollisionEvent/Collision
+    value: 1
   serializedIntEntries: []
